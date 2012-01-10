@@ -1,0 +1,10 @@
+<?php
+
+$db_connection=array(
+"hostname"=>"_DB_HOST_",
+"username"=>"_DB_USER_",
+"password"=>"_DB_PASSWORD_",
+"db"=>"_DB_NAME_",
+);
+    
+?>
