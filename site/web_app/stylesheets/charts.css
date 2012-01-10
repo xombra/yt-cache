@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* CSS Document */
+<style type="text/css">
+
+.bartable {
+	background-image:url(/site/web_app/images/bg_fade.gif);
+	background-repeat:repeat-x;
+	background-position:left top;
+	width: 33em;
+}
+
+.bartable td.value {
+	background-image: url(site/web_app/images/bar.png);
+	background-repeat: repeat-x;
+	background-position: left top;
+	border-left: 1px solid #e5e5e5;
+	border-right: 1px solid #e5e5e5;
+	padding:0;
+	border-bottom: none;
+	background-color:transparent;
+}
+
+.bartable td {
+	padding: 4px 6px;
+	border-bottom:1px solid #e5e5e5;
+	border-left:1px solid #e5e5e5;
+	background-color:#fff;
+}
+
+.bartable body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 80%;
+}
+
+.bartable td.value img {
+	vertical-align: middle;
+	margin: 5px 5px 5px 0;
+}
+
+.bartable th {
+	text-align: left;
+	vertical-align:top;
+}
+
+.bartable td.last {
+	border-bottom:1px solid #e5e5e5;
+}
+
+.bartable td.first {
+	border-top:1px solid #e5e5e5;
+}
+
+.auraltext
+{
+	position: absolute;
+	font-size: 0;
+	left: -1000px;
+}
+
+.bartable caption {
+	font-size:90%;
+	font-style:italic;
+}
+
+</style>
