@@ -1,15 +1,13 @@
 <?php
 
-    require_once("settings.inc");    
-    
-    if (file_exists($config_file_path)) {        
+require_once("settings.inc");
+/*
+    if (file_exists($config_file_path)) {
 		header("location: ".$application_start_file);
         exit;
 	}
-       
-?>	
-
-
+*/
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <html>
@@ -19,9 +17,8 @@
 	<link rel="stylesheet" type="text/css" href="img/styles.css">
 </head>
 
-
 <BODY text=#000000 vLink=#2971c1 aLink=#2971c1 link=#2971c1 bgColor=#ffffff>
-    
+
 <TABLE align="center" width="70%" cellSpacing=0 cellPadding=2 border=0>
 <TBODY>
 <TR>

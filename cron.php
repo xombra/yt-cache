@@ -21,7 +21,9 @@ $insert=array(
 
 $db->insert_row("graphs",$insert);
 
-$rows=$db->sql("SELECT * FROM `temporary` WHERE accessed < DATE_SUB(NOW(), INTERVAL 5 minute)") or die("Mysql ERROR: ".$db->lasterror."sql ".$db->lastsql);
+$rows=$db->sql("SELECT * FROM `temporary` WHERE accessed < DATE_SUB(NOW(), INTERVAL 5 minute)");
+if ($db->lasterror)
+    die("Mysql ERROR: ".$db->lasterror."sql ".$db->lastsql);
 
 $count=0;
 foreach ($rows as $row) {
