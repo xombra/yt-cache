@@ -413,8 +413,15 @@ class YouTubeCacher
                         if (strncmp($n, 'HTTP_', 5) === 0) {
                                 // HTTP_USER_AGENT > USER_AGENT > USER AGENT > user agent > User Agent > User-Agent
                                 $pn = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($n, 5)))));
-                                $this->client_request_headers[$pn] = $v;
-                                $this->log(0,__FUNCTION__,"client_request_headers[$pn] => [$v]");
+                                // fix unneded range request (chrome only?)
+                                // client_request_headers[Range] => [bytes=0-]
+//                                if (($pn=="Range" && $v=="bytes=0-") || $pn=="Via" || $pn=="X-Forwarded-For") {
+//                                    $this->log(0,__FUNCTION__,"skipped header [$pn] => [$v]"); 
+//                                    unset($_SERVER[$n]);
+//                                    } else {
+                                    $this->client_request_headers[$pn] = $v;
+                                    $this->log(0,__FUNCTION__,"copy client header [$pn] => [$v]");
+  //                                  }
                         }
                 }
         }
@@ -490,20 +497,22 @@ class YouTubeCacher
         public function send_reply_headers_to_client()
         {
                 $hs = $this->server_reply_headers;
-                if (isset($hs['Content-Range'])) {
-                        foreach (array(
-                                'HTTP/1.0 206 Partial Content',
-                                'Content-Range: ' . $hs['Content-Range']
-                        ) as $h) {
-                                header($h);
-                                $this->log(0,__FUNCTION__,"Range header > client: [$h]");
-                        }
-                }
 
+                if (isset($hs['Content-Range'])) {
+                        $h='HTTP/1.0 206 Partial Content';
+                        header($h);
+                        $this->log(0,__FUNCTION__,"Reply header > client: [{$h}]");
+                        $h='Content-Range: ' . $hs['Content-Range'];
+                        header($h);
+                        $this->log(0,__FUNCTION__,"Reply header > client: [{$h}]");
+                        $h='Accept-Ranges: bytes';
+                        header($h);
+                }
+                
                 foreach ($this->server_reply_headers as $n => $v) {
                         if (in_array($n, $this->cached_headers)) {
                                 header("$n: $v");
-                                $this->log(0,__FUNCTION__,"Reply header > client [$n: $v]");
+                                $this->log(0,__FUNCTION__,"Reply header > client [{$n}: {$v}]");
                         }
                 }
                 $this->send_dynamic_headers_to_client();
@@ -629,7 +638,7 @@ class YouTubeCacher
                                 }
                             $header_printable=preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $header);
                             if (!in_array($header_printable,$this->known_formats))
-                                $this->logdie(2,__FUNCTION__,"Invalid header for request {$this->cache_request} size ({$this->cache_header_size}): "." 0x".dechex(ord(substr($data,0,1)))." 0x".dechex(ord(substr($data,1,1)))." 0x".dechex(ord(substr($data,2,1)))." 0x".dechex(ord(substr($data,3,1))));
+                                $this->logdie(2,__FUNCTION__,"Invalid header for request {$this->cache_request}");
                         }
                         
                         // print data to client
