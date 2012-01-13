@@ -46,20 +46,28 @@ This cannot hold detailed manual for all cases becouse there's a very different 
 Generic solution
 
 Next subnets should be forwarded to local cache ip, port 8080 (transparent):
+
 ;;; youtube videos preffered - etc o-o.preferred.bud01s03.v19.lscache6.c.youtube.com
 74.125.108.0/24 
+
 ;;; youtube videos standard
 208.65.154.0/24 
+
 ;;; youtube www
 74.125.232.192/28 
+
 ;;; v1.lscache1.c.youtube.com
 74.125.15.0/24 
+
 ;;; tc.v1.cache1.c.youtube.com
 208.65.155.0/24 
+
 ;;; tc.v1.cache2.c.youtube.com
 208.117.226.0/24 
+
 ;;;  v1.cache1.c.youtube.com
 74.125.218.0/24 
+
 ;;; cache.telekom.rs
 79.101.110.0/23 
 
@@ -69,14 +77,23 @@ Mikrotik (bridge configuration-this router don't NAT anything, just bridges)
 
 {{{
 /ip firewall address-list
+
 add address=74.125.108.0/24 comment="youtube videos preffered - etc o-o.preferred.bud01s03.v19.lscache6.c.youtube.com" disabled=no list=youtube
+
 add address=208.65.154.0/24 comment="youtube videos standard" disabled=no list=youtube
+
 add address=74.125.232.192/28 comment="youtube www" disabled=no list=youtube
+
 add address=74.125.15.0/24 comment=v1.lscache1.c.youtube.com disabled=no list=youtube
+
 add address=208.65.155.0/24 comment=tc.v1.cache1.c.youtube.com disabled=no list=youtube
+
 add address=208.117.226.0/24 comment=tc.v1.cache2.c.youtube.com disabled=no list=youtube
+
 add address=74.125.218.0/24 comment=" v1.cache1.c.youtube.com" disabled=no list=youtube
+
 add address=79.101.110.0/23 comment=cache.telekom.rs disabled=no list=youtube
+
 add address=[LOCAL SUBNET] comment=cache.telekom.rs disabled=no list=youtube_source
 }}}
 {{{
