@@ -30,7 +30,19 @@ class YouTubeCacher
         private $troughput_local=0;     // Local troughput (serving local files)
         private $already_downloading=false; // File is already downloading, do not download again
         private $nocache=false; // File caching is disabled
-        private $known_formats=array("FLVK","ftypmp42isom");
+/*
+<strong>			5:  { itag: 5 , quality:  1, description: getTrans("low")     , format: "FLV" , mres: { width:  400, height:  240 }, acodec: "MP3"   , vcodec: "SVQ"                          , arate: 22050, abr:  64000, vbr:  250000 },
+			18: { itag: 18, quality:  5, description: getTrans("high")    , format: "MP4" , mres: { width:  480, height:  360 }, acodec: "AAC"   , vcodec: "H.264" , vpro: "Baseline@L3.0", arate: 44100, abr:  96000, vbr:  500000 },
+			22: { itag: 22, quality:  8, description: getTrans("highdef") , format: "MP4" , mres: { width: 1280, height:  720 }, acodec: "AAC"   , vcodec: "H.264" , vpro: "High@L3.1"    , arate: 44100, abr: 152000, vbr: 2000000 },
+			34: { itag: 34, quality:  3, description: getTrans("lowdef")  , format: "FLV" , mres: { width:  640, height:  360 }, acodec: "AAC"   , vcodec: "H.264" , vpro: "Main@L3.0"    , arate: 44100, abr: 128000, vbr:  500000 },
+			35: { itag: 35, quality:  6, description: getTrans("stddef")  , format: "FLV" , mres: { width:  854, height:  480 }, acodec: "AAC"   , vcodec: "H.264" , vpro: "Main@L3.0"    , arate: 44100, abr: 128000, vbr:  800000 },
+			37: { itag: 37, quality:  9, description: getTrans("fhighdef"), format: "MP4" , mres: { width: 1920, height: 1080 }, acodec: "AAC"   , vcodec: "H.264" , vpro: "High@L4.0"    , arate: 44100, abr: 152000, vbr: 3500000 },
+			38: { itag: 38, quality: 10, description: getTrans("origdef") , format: "MP4" , mres: { width: 4096, height: 3072 }, acodec: "AAC"   , vcodec: "H.264" },
+			43: { itag: 43, quality:  2, description: getTrans("lowdef")  , format: "WebM", mres: { width:  640, height:  360 }, acodec: "Vorbis", vcodec: "VP8"                          , arate: 44100, abr: 128000, vbr:  500000 },
+			44: { itag: 44, quality:  4, description: getTrans("stddef")  , format: "WebM", mres: { width:  854, height:  480 }, acodec: "Vorbis", vcodec: "VP8"                          , arate: 44100, abr: 128000, vbr: 1000000 }, 
+			45: { itag: 45, quality:  7, description: getTrans("highdef") , format: "WebM", mres: { width: 1280, height:  720 }, acodec: "Vorbis", vcodec: "VP8"                          , arate: 44100, abr: 192000, vbr: 2000000 },</strong>
+*/
+        private $known_formats=array("FLVK","ftypmp42isom","EBB");
         private $dretry=0;  // data transfer retry
         private $tsize=0;   // transfer size so far
         private $tcount=0;  // packet count
@@ -58,6 +70,22 @@ class YouTubeCacher
         private function temporary_transfer($request,$filename,$accessed,$size,$progress,$packet_count,$client_ip) {
             $pid=getmypid();
             $this->db->sql("REPLACE INTO `temporary` (request,filename,accessed,size,progress,packet_count,ip,pid) VALUES ('{$request}','{$filename}',NOW(),'{$size}','{$progress}','{$packet_count}','{$client_ip}','{$pid}')");
+        }
+        
+        private function hexdump($str,$len=false) {
+            $output="";$output1="";
+            if (!$len)
+                $len=strlen($str);
+            for ($c=0;$c<$len;$c++) {
+                $output.=bin2hex($str[$c])." ";
+            }
+            for ($c=0;$c<$len;$c++) {
+                $chr=$str[$c];
+                if (ord($chr)<32 || ord($chr)>126)
+                    $chr=".";
+                $output1.=$chr." ";
+            }
+            return $output.$output1;
         }
         
         private function add_to_stats() {
@@ -421,7 +449,7 @@ class YouTubeCacher
 //                                    } else {
                                     $this->client_request_headers[$pn] = $v;
                                     $this->log(0,__FUNCTION__,"copy client header [$pn] => [$v]");
-  //                                  }
+//                                    }
                         }
                 }
         }
@@ -634,11 +662,12 @@ class YouTubeCacher
                             $header=substr($data,0,20);
                             if (substr($header,0,4)==chr(0x12).chr(00).chr(03).chr(0x4b)) { //header missing, try to fix it
                                 $data="FLV".chr(0x01).chr(0x05).chr(0x00).chr(0x00).chr(0x00).chr(0x09).chr(0x00).chr(0x00).chr(0x00).chr(0x00).$data;
-                                $this->log(1,__FUNCTION__,"Fixing header:");
+                                $header=substr($data,0,20);
+                                $this->log(1,__FUNCTION__,"Fixing header");
                                 }
                             $header_printable=preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $header);
                             if (!in_array($header_printable,$this->known_formats))
-                                $this->logdie(2,__FUNCTION__,"Invalid header for request {$this->cache_request}");
+                                $this->logdie(2,__FUNCTION__,"Invalid header for request {$this->cache_request} PRINTABLE [{$header_printable}] HEXDUMP ".$this->hexdump($header));
                         }
                         
                         // print data to client
