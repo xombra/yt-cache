@@ -666,8 +666,9 @@ class YouTubeCacher
                                 $this->log(1,__FUNCTION__,"Fixing header");
                                 }
                             $header_printable=preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $header);
-                            if (!in_array($header_printable,$this->known_formats))
-                                $this->logdie(2,__FUNCTION__,"Invalid header for request {$this->cache_request} PRINTABLE [{$header_printable}] HEXDUMP ".$this->hexdump($header));
+                            // unpredictable header for some (unknown?) formats
+//                            if (!in_array($header_printable,$this->known_formats))
+//                                $this->logdie(2,__FUNCTION__,"Invalid header for request {$this->cache_request} PRINTABLE [{$header_printable}] HEXDUMP ".$this->hexdump($header));
                         }
                         
                         // print data to client
