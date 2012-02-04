@@ -37,7 +37,7 @@ Next thing is a debug.
 Set this to 0 ONLY if you have less than 5 users simoultaniously accessing the cache otherwise this table will be flooded with requests and debug info.
 In the productivity mode keep this to 2 as it will show in the debug table only criticals and errors.
 
-== Forward the ports to cache ==
+== Forwarding ports to cache ==
 
 This cannot hold detailed manual for all cases becouse there's a very different routers on the market, and i will try to populate this list as much as i can including "generic" solution.
 
@@ -101,4 +101,4 @@ add address=[LOCAL SUBNET] comment=cache.telekom.rs disabled=no list=youtube_sou
 add action=dst-nat chain=dstnat comment="youtube redirect" disabled=yes dst-address-list=youtube dst-port=\
     80 protocol=tcp src-address-list=youtube_source to-addresses=[LOCALIP] to-ports=8080
 }}}
-replace [LOCALIP] and [LOCAL SUBNET] with appropriate addresses
+replace *LOCALIP* and *LOCAL SUBNET* with appropriate addresses
