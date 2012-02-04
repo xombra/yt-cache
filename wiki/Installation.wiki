@@ -30,7 +30,7 @@ Squid configuration is probalby on one of the next locations:
  * /etc/squid/squid.conf
  * /usr/local/etc/squid/squid.conf
  * /usr/local/squid/etc/squid/squid.conf
-If you still can't find it, try updatedb + locate squid.conf commands.
+If you still can't find it, try *updatedb* + *locate squid.conf* commands.
 
 In the end of the config file add following:
 {{{
