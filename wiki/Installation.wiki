@@ -16,6 +16,29 @@ Prerequisites:
 
 (recommended) Debian/Ubuntu: apt-get install squid squid-common squid-langpack apache2 mysql-server mysql-client php5 php5-mysql php5-gd ruby
 CentOS/Redhat: yum install squid httpd mysql php php-mysql php-gd ruby
+Others:
+There must be installed:
+* Apache
+* PHP
+* Mysql
+* PHP GD package (for creating graphs)
+* squid
+* Ruby
+
+== Setup squid ==
+Squid configuration is probalby on one of the next locations:
+* /etc/squid/squid.conf
+* /usr/local/etc/squid/squid.conf
+* /usr/local/squid/etc/squid/squid.conf
+If you still can't find it, try updatedb + locate squid.conf commands.
+
+In the end of the config file add following:
+{{{
+url_rewrite_program /var/www/cache.rb
+url_rewrite_host_header off
+cache deny to_localhost
+header_access Server deny to_localhost
+}}}
 
 = How to install script =
 
