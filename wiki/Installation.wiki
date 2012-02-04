@@ -40,6 +40,16 @@ cache deny to_localhost
 header_access Server deny to_localhost
 }}}
 
+replace */var/www/cache.rb* with your path if different.
+
+== Setup Apache2 ==
+(Ubuntu/Debian): Edit /etc/apache2/apache2.conf and add on the end:
+ * ServerToken Prod
+
+== Setup PHP ==
+(Ubuntu/Debian): Edit /etc/php5/apache2/php.ini and add on the end:
+ * expose_php = Off
+
 = How to install script =
 
 {{{
