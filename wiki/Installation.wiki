@@ -18,12 +18,12 @@ Prerequisites:
 CentOS/Redhat: yum install squid httpd mysql php php-mysql php-gd ruby
 Others:
 There must be installed:
-* Apache
-* PHP
-* Mysql
-* PHP GD package (for creating graphs)
-* squid
-* Ruby
+ * Apache
+ * PHP
+ * Mysql
+ * PHP GD package (for creating graphs)
+ * squid
+ * Ruby
 
 == Setup squid ==
 Squid configuration is probalby on one of the next locations:
