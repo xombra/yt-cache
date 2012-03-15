@@ -6,9 +6,89 @@ class settings extends base {
         $submenu=array();
         $submenu[0]["index"]["link"]="submenu=settings";
         $submenu[0]["index"]["name"]="Settings";
+        $submenu[1]["index"]["link"]="submenu=members";
+        $submenu[1]["index"]["name"]="Members";
         $this->page_manager->submenu($submenu);
     }
     
+    private function members() {
+            
+$urows=$this->db->get_rows("users");
+$list="";
+foreach ($urows as $urow) {
+    $list.="<label class=\"label\"><a href='?page=settings&submenu=members&profid={$urow['id']}'>{$urow['username']}</a></label>\n";
+}
+$form_block=<<<FORMBLOCK
+       <div class="block" id="block-forms">
+           <div class="content">
+            <h2 class="title">Users</h2>
+            <div class="inner">
+              <form action="#" method="get" class="form">
+                <div class="group">
+                  {$list}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+FORMBLOCK;
+$this->content.=$form_block;
+        }
+
+public function profile_show_id($profid) {
+    $id=(int)$profid;
+    $find=array(
+    "id"=>$id,
+    );
+    $urow=$this->db->get_row("users",$find);
+$form_block=<<<FORMBLOCK
+<form id='settings' name='settings' method=POST>
+       <div class="block" id="block-forms">
+           <div class="content">
+            <h2 class="title">User Profile - id {$id}</h2>
+            <div class="inner">
+              <form action="#" method="get" class="form">
+                <div class="group">
+                  <label class="label">Username</label>
+                  <input type="text" class="text_field" value="{$urow["username"]}"/>
+                  <span class="description">Ex: a simple text</span>
+                </div>
+                <div class="group">
+                  <div class="fieldWithErrors">
+                    <label class="label" for="post_title">Password</label>
+                    <span class="error">can't be blank</span>
+                  </div>
+                  <input type="text" class="text_field" value="{$urow["password"]}"/>
+                  <span class="description">Ex: a simple text</span>
+                </div>
+                <div class="group">
+                  <div class="fieldWithErrors">
+                    <label class="label" for="post_title">Access right</label>
+                    <span class="error">can't be blank</span>
+                  </div>
+                  <input type="text" class="text_field" value="{$urow["ulevel"]}"/>
+                  <span class="description">Ex: a simple text</span>
+                </div>
+                <div class="group">
+                  <label class="label">Text area</label>
+                  <textarea class="text_area" rows="10" cols="80"></textarea>
+                  <span class="description">Write here a long text</span>
+                </div>
+                <div class="group navform wat-cf">
+                  <button class="button" type="submit">
+                    <img src="images/icons/tick.png" alt="Save" /> Save
+                  </button>
+                  <span class="text_button_padding">or</span>
+                  <a class="text_button_padding link_button" href="#header">Cancel</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+FORMBLOCK;
+$this->content.=$form_block;
+    }
+
     private function format_storage($storage) {
             $format_array=array(0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f");
             $path=$this->settings[$storage];
@@ -114,7 +194,14 @@ class settings extends base {
         }
 
         $submenu=$_REQUEST["submenu"];
+        $profid=$_REQUEST["profid"];
+        
         switch($submenu) {
+            case "members":
+            if ($profid)
+            $this->profile_show_id($profid); else
+            $this->members();
+            break;
             case "settings":
             $this->show_settings();
             break;

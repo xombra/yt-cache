@@ -10,24 +10,36 @@ class profile extends base {
     }
 
     public function profile_show() {
-$id=
+    $id=(int)(int)$_SESSION['SESS_USER_ID'];
+    $find=array(
+    "id"=>$id,
+    );
+    $urow=$this->db->get_row("users",$find);
 $form_block=<<<FORMBLOCK
        <div class="block" id="block-forms">
            <div class="content">
-            <h2 class="title">User Profile - id {$id}}</h2>
+            <h2 class="title">User Profile - id {$id}</h2>
             <div class="inner">
               <form action="#" method="get" class="form">
                 <div class="group">
-                  <label class="label">Text field</label>
-                  <input type="text" class="text_field" />
+                  <label class="label">Username</label>
+                  <input type="text" class="text_field" value="{$urow["username"]}"/>
                   <span class="description">Ex: a simple text</span>
                 </div>
                 <div class="group">
                   <div class="fieldWithErrors">
-                    <label class="label" for="post_title">Title</label>
+                    <label class="label" for="post_title">Password</label>
                     <span class="error">can't be blank</span>
                   </div>
-                  <input type="text" class="text_field" />
+                  <input type="text" class="text_field" value="{$urow["password"]}"/>
+                  <span class="description">Ex: a simple text</span>
+                </div>
+                <div class="group">
+                  <div class="fieldWithErrors">
+                    <label class="label" for="post_title">Access right</label>
+                    <span class="error">can't be blank</span>
+                  </div>
+                  <input type="text" class="text_field" value="{$urow["ulevel"]}"/>
                   <span class="description">Ex: a simple text</span>
                 </div>
                 <div class="group">
@@ -65,7 +77,6 @@ $this->content.=$form_block;
             break;
             default:
             header("Location: index.php?page=profile&submenu=profile");
-            
         }
 
         $this->submenu();
