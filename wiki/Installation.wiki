@@ -70,7 +70,7 @@ Next thing is a debug.
 Set this to 0 ONLY if you have less than 5 users simoultaniously accessing the cache otherwise this table will be flooded with requests and debug info.
 In the productivity mode keep this to 2 as it will show in the debug table only criticals and errors.
 
-== Forwarding ports to cache ==
+== Forwarding ports to cache (only when in bridge mode) ==
 
 This cannot hold detailed manual for all cases becouse there's a very different routers on the market, and i will try to populate this list as much as i can including "generic" solution.
 
