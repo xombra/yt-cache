@@ -670,15 +670,16 @@ class YouTubeCacher
 //                            if (!in_array($header_printable,$this->known_formats))
 //                                $this->logdie(2,__FUNCTION__,"Invalid header for request {$this->cache_request} PRINTABLE [{$header_printable}] HEXDUMP ".$this->hexdump($header));
                         }
+
+                        // remove stalled transfers
+                        if (empty($data)) {
+                            $this->log(2,__FUNCTION__,"Empty content reached at pos [{$this->tsize}] packet [{$this->tcount}] file [{$this->cache_filename}] request [{$this->cache_request}]");
+                            $this->close_cache_file();
+                            return true;
+                        }
                         
                         // print data to client
                         echo $data;
-                        
-                        // hopefully remove stalled transfers
-                        if (empty($data)) {
-                            $this->logdie(2,__FUNCTION__,"Empty content reached at pos [{$this->tsize}] packet [{$this->tcount}]");
-                        }
-                            
                         
                         // To cache file, if cache file pointer is ok
                         if ($this->cache_fp) {
