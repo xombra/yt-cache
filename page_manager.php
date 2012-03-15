@@ -249,7 +249,11 @@ class page_manager {
             if ($active_submenu===strtolower($value["name"]))
                 $class=' class="active first"'; else
                 $class='';
-            $this->submenu.=' <li'.$class.'><a href="'.$_SERVER["REQUEST_URI"]."&".$value['link'].'">'.$value['name'].'</a></li>'."\n";
+            $uri=$_SERVER["REQUEST_URI"];
+            $uria=explode("&",$uri);
+            $uri_base=$uria[0];
+            $this->submenu.=' <li'.$class.'><a href="'.$uri_base."&".$value['link'].'">'.$value['name'].'</a></li>'."\n";
+            
         }
     $this->submenu.='</ul></div>'."\n";
     }
