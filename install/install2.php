@@ -41,6 +41,18 @@
 			$config_file = str_replace("_DB_USER_", $database_username, $config_file);
 			$config_file = str_replace("_DB_PASSWORD_", $database_password, $config_file);
 			*/
+$config_file=<<<CONFIG
+<?php
+
+$db_connection=array(
+"hostname"=>"{$database_host}",
+"username"=>"{$database_username}",
+"password"=>"{$database_password}",
+"db"=>"{$database_name}",
+);
+
+?>
+CONFIG;
 			$f = @fopen($config_file_path, "w+");
             if (!$f)
                 $error_mg[] = "Can't open configuration file ".$config_file_path;
