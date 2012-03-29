@@ -34,19 +34,21 @@
 		}
 		
 		if(empty($error_mg)){
-		
+		    /*
 			$config_file = file_get_contents($config_file_default);
 			$config_file = str_replace("_DB_HOST_", $database_host, $config_file);
 			$config_file = str_replace("_DB_NAME_", $database_name, $config_file);
 			$config_file = str_replace("_DB_USER_", $database_username, $config_file);
 			$config_file = str_replace("_DB_PASSWORD_", $database_password, $config_file);
-			
+			*/
 			$f = @fopen($config_file_path, "w+");
-			if (@fwrite($f, $config_file) > 0){
+            if (!$f)
+                $error_mg[] = "Can't open configuration file ".$config_file_path;
+			if (@fwrite($f, $config_file) > 0 && !$f) {
                 $link = @mysql_connect($database_host, $database_username, $database_password);
-				if($link){					
-					if (@mysql_select_db($database_name)) {                        
-                        if(false == ($db_error = apphp_db_install($database_name, $sql_dump))){
+				if ($link) {
+					if (@mysql_select_db($database_name)) {
+                        if(false == ($db_error = apphp_db_install($database_name, $sql_dump))) {
                             $error_mg[] = "Could not read file ".$sql_dump."! Please check if the file exists.";                            
                             @unlink($config_file_path);
                         }else{
@@ -63,7 +65,7 @@
                     @unlink($config_file_path);
 				}
 			} else {				
-				$error_mg[] = "Can not open configuration file ".$config_file_directory.$config_file_name;				
+				$error_mg[] = "Can't write to configuration file ".$config_file_path;				
 			}
 			@fclose($f);			
 		}
