@@ -44,7 +44,7 @@
 $config_file=<<<CONFIG
 <?php
 
-$db_connection=array(
+\$db_connection=array(
 "hostname"=>"{$database_host}",
 "username"=>"{$database_username}",
 "password"=>"{$database_password}",
@@ -55,8 +55,8 @@ $db_connection=array(
 CONFIG;
 			$f = @fopen($config_file_path, "w+");
             if (!$f)
-                $error_mg[] = "Can't open configuration file ".$config_file_path;
-			if (@fwrite($f, $config_file) > 0 && !$f) {
+                $error_mg[] = "Can't open configuration file ".$config_file_path; else
+			if (@fwrite($f, $config_file) > 0) {
                 $link = @mysql_connect($database_host, $database_username, $database_password);
 				if ($link) {
 					if (@mysql_select_db($database_name)) {
