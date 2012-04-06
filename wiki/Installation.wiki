@@ -54,9 +54,10 @@ replace */var/www/cache.rb* with your path if different.
 
 {{{
 1. Login to FTP and upload all files to ROOT www folder (very important - do not put it to folder below top-level domain root, example http://my-cache.com/ytcache/ is incorrect!)
-2. Point web browser to server ip/domain name installer, example: http://my-cache.com/install
-3. Follow the instructions
-4. Delete whole install folder (for additional security)
+2. Go to shell and set owner www-data on www: chown www-data:www-data /var/www -R
+3. Point web browser to server ip/domain name installer, example: http://my-cache.com/install
+4. Follow the instructions
+5. Delete whole install folder (for additional security)
 }}}
 
 Now go to web root (http://yout-domain.you/index.php) and login with admin/admin.
