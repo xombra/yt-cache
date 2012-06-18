@@ -61,6 +61,9 @@ $result=true;
     if (file_exists("/usr/local/etc/squid/squid.conf"))
         $squid_config_file="/usr/local/etc/squid/squid.conf";
     else
+    if (file_exists("/usr/local/squid/etc/squid.conf"))
+        $squid_config_file="/usr/local/squid/etc/squid.conf";
+    else
     if (file_exists("/usr/local/squid/etc/squid/squid.conf"))
         $squid_config_file="/usr/local/squid/etc/squid/squid.conf";    
     if (!$squid_config_file) {
